@@ -1,6 +1,6 @@
 ---
 title: "Final Project"
-author: "Ben, Andrew"
+author: "Ben, Andrew, Pranati"
 format: html
 editor: source
 ---
