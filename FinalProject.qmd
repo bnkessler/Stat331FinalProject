@@ -1,27 +1,23 @@
 ---
 title: "Final Project"
-author: "Ben, Andrew, Pranati"
+author: "Ben, Andrew, Pranati, Filip"
 format: html
 editor: source
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
+## Setup
+```{r setup}
+library(tidyverse)
 ```
 
-You can add options to executable code like this
-
+## Data
 ```{r}
-#| echo: false
-2 * 2
+CO2 <- read_csv("co2_emissions_tonnes_per_person.csv", col_select = c(1, 152:220))
+mhi <- read_csv("mhhinc.csv", col_select = c(1, 152:220))
+
+CO2 <- pivot_longer(CO2, cols = 2:70, names_to = "year", values_to = "co2")
+
+
+pivot_longer(mhi, cols = 2:70, names_to = "year", values_to = "mean_income")
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
