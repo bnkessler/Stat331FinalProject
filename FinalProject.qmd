@@ -30,6 +30,13 @@ mhi <- mhi %>%
     )
     )
 
+mhi <- mhi %>%
+  mutate_at(vars(-1), function(x) {
+    x <- ifelse(str_detect(x, "k"), 
+                as.numeric(str_replace_all(x, "k", "")) * 1000, 
+                as.numeric(x))
+    return(x)
+})
 
 pivot_longer(
   mhi, cols = 2:70, names_to = "year", values_to = "mean_income",
