@@ -15,6 +15,25 @@ library(tidyverse)
 CO2 <- read_csv("co2_emissions_tonnes_per_person.csv", col_select = c(1, 152:220))
 mhi <- read_csv("mhhinc.csv", col_select = c(1, 152:220))
 
+CO2 <- pivot_longer(CO2, cols = 2:70, names_to = "year", values_to = "co2")
+mhi <- mhi %>% 
+  mutate(
+    across(.cols = `1950`:`2018`, .fns = ~ str_replace_all(
+    string = .,
+    pattern = "k(?<!\\.)\\b(\\d+(?:\\.\\d+)?)(?=k)\\b",
+    replacement = "000")
+    ),
+    across(.cols = `1950`:`2018`, .fns = ~ str_replace_all(
+    string = .,
+    pattern = ".(\\d+)k",
+    replacement = "\\100")
+    )
+    )
 
+
+pivot_longer(
+  mhi, cols = 2:70, names_to = "year", values_to = "mean_income",
+  values_transform = list(mean_income = as.double)
+    )
 ```
 
