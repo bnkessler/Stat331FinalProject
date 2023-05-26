@@ -1,8 +1,18 @@
 ---
 title: "Final Project Proposal and Data"
 author: "Ben, Andrew, Pranati, Filip"
-format: html
+format: 
+  html:
+    self-contained: true
+    code-tools: true
+    toc: true
+    number-sections: true
 editor: source
+execute: 
+  error: true
+  echo: true
+  message: false
+  warning: false
 ---
 
 ## Setup
