@@ -1,0 +1,44 @@
+---
+title: "Final Project Proposal and Data"
+author: "Ben, Andrew, Pranati, Filip"
+format: html
+editor: source
+---
+
+## Setup
+```{r setup}
+library(tidyverse)
+```
+
+## Proposal
+We expect to observe a positive relationship between mean household income and CO2 emissions. We believe that as income increases, consumption will also increase, which will lead to higher pollution/emissions.  A larger amount of energy-consuming human activities occurs because of  economic development which is based on income level. Therefore, as GDP increases, the level of economic development would be higher leading to more CO2 emissions.
+
+## Data
+```{r}
+CO2 <- read_csv("co2_emissions_tonnes_per_person.csv", col_select = c(1, 152:220))
+mhi <- read_csv("mhhinc.csv", col_select = c(1, 152:220))
+
+
+mhi <- mhi %>%
+  mutate_at(vars(-1), function(x) {
+    x <- ifelse(str_detect(x, "k"), 
+                as.numeric(str_replace_all(x, "k", "")) * 1000, 
+                as.numeric(x))
+    return(x)
+})
+
+mhi <- pivot_longer(
+  mhi, cols = 2:70, names_to = "year", values_to = "mean_income",
+  values_transform = list(mean_income = as.double)
+    )
+CO2 <- pivot_longer(CO2, cols = 2:70, names_to = "year", values_to = "co2")
+
+mhi_CO2 <- mhi %>% 
+  full_join(CO2, by = join_by(country, year))
+```
+
+### Data Description
+The data set hopes to discover a relationship between the mean household income and amount of tons in CO2 emission on an average country. The study is observational with the experimental units being each country.The mean household income data provides the average household income per year for each individual country, starting at 1950 and ending in 2018. The units of the incomes provided are in standardized international dollar units. The CO2 emissions per person dataset records the average carbon dioxide produced per person in the country per year measured in metric tonnes, starting in 1950 and ending in 2018.
+
+### Data Cleaning
+After looking at both sets of data we decided to start our analysis in 1950, as this is when the CO2 emission data began to be widespread. The CO2 data was already clean and ready for use but the mean household income data was not. To fix  this, we had to replace the "k's" in the data and multiply by 1000. After importing the selected years and cleaning the data, we pivoted the data to long format. We then full joined the two data sets together by country and year to create one large data set. This does leave NA's in the dataset for some countries where CO2 data is only recent, but we are still deciding how we want to treat those few, small countries. 
