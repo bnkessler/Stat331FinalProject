@@ -101,3 +101,4 @@ model <- lm(co2 ~ mean_income, data = mhi_CO2)
 summary(model)
 ```
 
+## Model Fit
