@@ -48,7 +48,7 @@ mhi_CO2 <- mhi %>%
 ## Linear Regression
 
 ```{r}
-model <- lm(mean_income ~ co2, data = mhi_CO2)
+model <- lm(co2 ~ mean_income, data = mhi_CO2)
 summary(model)
 ```
 
