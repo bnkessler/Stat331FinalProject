@@ -59,12 +59,20 @@ co2_income_plot <- mhi_CO2 %>%
   )
 
 interactive_co2_income_plot <- ggplotly(co2_income_plot) %>% 
+<<<<<<< HEAD
   layout(title = list(text = paste0(
+=======
+  layout(title = list(
+>>>>>>> e8d08973911ebec24c702ccb65fcdc16873e0b29
     "Carbon Dioxide Produced vs Mean Household Income",
     "<br>",
     "<sup>",
     "Carbon Dioxide Produced per Person [Metric Tonnes]",
+<<<<<<< HEAD
     "</sup>")))
+=======
+    "/sup"))
+>>>>>>> e8d08973911ebec24c702ccb65fcdc16873e0b29
 interactive_co2_income_plot
 
 time_plot <- mhi_CO2 %>% 
@@ -77,6 +85,7 @@ time_plot <- mhi_CO2 %>%
     breaks = c("1950", "1960", "1970", "1980", "1990", "2000", "2010", "2018")
     ) +
   labs(
+<<<<<<< HEAD
     x = "Year",
     y = "",
     title = "Metric Tons of Carbon Dioxide Produced per Person by Mean Household Income per Year"
@@ -90,6 +99,12 @@ interactive_time_plot <- ggplotly(time_plot) %>%
     "Carbon Dioxide Produced per Person by Mean Household Income [Metric Tonnes / International $]",
     "</sup>")))
   
+=======
+    x = ""
+  )
+
+interactive_time_plot <- ggplotly(time_plot)
+>>>>>>> e8d08973911ebec24c702ccb65fcdc16873e0b29
 interactive_time_plot
 ```
 
