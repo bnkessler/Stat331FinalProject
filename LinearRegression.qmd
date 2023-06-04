@@ -45,6 +45,45 @@ mhi_CO2 <- mhi %>%
   full_join(CO2, by = join_by(country, year))
 ```
 
+## Data Visualization
+
+```{r}
+co2_income_plot <- mhi_CO2 %>% 
+  ggplot(mapping = aes(x = mean_income, y = co2, color = country)) +
+  geom_line(show.legend = FALSE, linejoin = "round") +
+  labs(
+    x = "Mean Household Income [International $]",
+    y = "",
+    title = "Carbon Dioxide Produced vs Mean Household Income"
+  )
+
+interactive_co2_income_plot <- ggplotly(co2_income_plot) %>% 
+  layout(title = list(
+    "Carbon Dioxide Produced vs Mean Household Income",
+    "<br>",
+    "<sup>",
+    "Carbon Dioxide Produced per Person [Metric Tonnes]",
+    "/sup"))
+interactive_co2_income_plot
+
+time_plot <- mhi_CO2 %>% 
+  mutate(
+    co2_per_income = co2/mean_income
+  ) %>% 
+  ggplot(mapping = aes(x = year, y = co2_per_income, color = country, fill = country)) +
+  geom_col(position = "dodge", show.legend = FALSE) +
+  scale_x_discrete(
+    breaks = c("1950", "1960", "1970", "1980", "1990", "2000", "2010", "2018")
+    ) +
+  labs(
+    x = ""
+  )
+
+interactive_time_plot <- ggplotly(time_plot)
+interactive_time_plot
+```
+
+
 ## Linear Regression
 
 ```{r}
