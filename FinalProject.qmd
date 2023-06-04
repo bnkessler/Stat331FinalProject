@@ -30,6 +30,7 @@ mhi <- mhi %>%
     )
     )
 
+
 mhi <- mhi %>%
   mutate_at(vars(-1), function(x) {
     x <- ifelse(str_detect(x, "k"), 
@@ -38,9 +39,10 @@ mhi <- mhi %>%
     return(x)
 })
 
-pivot_longer(
-  mhi, cols = 2:70, names_to = "year", values_to = "mean_income",
-  values_transform = list(mean_income = as.double)
-    )
+mhi <- mhi|>
+  pivot_longer(cols = 2:70,
+               names_to = "year",
+               values_to = "mean_income",
+  values_transform = list(mean_income = as.double))
 ```
 
