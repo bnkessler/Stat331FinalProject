@@ -93,6 +93,9 @@ interactive_time_plot <- ggplotly(time_plot) %>%
 interactive_time_plot
 ```
 
+Present and discuss visualizations of the relationship between the variables
+
+The two plots shown are interactive plots of Carbon Dioxide Produced per Person vs. Mean Household Income and Carbon Dioxide Produced per Person by Mean Household Income per Year, respectively. The first plot shows Mean Household Income on the x-axis and metric tonnes of Carbon Dioxide produced per person on the y-axis. This plot shows how increasing income affects the amount of CO2 produced per person. The second plot shows the change in graph one over time, from 1950 to 2018. This plot shows how the ratio of CO2 produced over mean household income has changed over the last 68 years.
 
 ## Linear Regression
 
