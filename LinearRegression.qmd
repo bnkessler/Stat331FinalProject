@@ -10,15 +10,17 @@ format:
 editor: source
 execute: 
   error: true
-  echo: false
+  echo: true
   message: false
   warning: false
 ---
 
 ## Setup
+
 ```{r setup}
 library(tidyverse)
 library(plotly)
+library(kableExtra)
 ```
 
 ## Data
@@ -102,12 +104,37 @@ model <- lm(co2 ~ mean_income, data = mhi_CO2)
 summary(model)
 ```
 
-Linear regression involves modeling the relationship between variables in a dataset in a scalar way. A linear model in the form yi = β0 +  β1xi + ε is used to describe the relationship between each explanatory variable to the response accounting for random error. In this study, mean income is the explanatory variable and predicted co2 level is the response, so the model attempts to explain how changes in mean income increase or decrease predicted(co2) levels. 
+Linear regression involves modeling the relationship between variables in a dataset in a scalar way. A linear model in the form yi = β0 + β1xi + ε is used to describe the relationship between each explanatory variable to the response accounting for random error. In this study, mean income is the explanatory variable and predicted co2 level is the response, so the model attempts to explain how changes in mean income increase or decrease predicted(co2) levels.
 
 $Predicted(co2) = 1.163 + .0006679(mean income)$
 
 For every one unit increase in mean income(measured in standardized international dollar units), we expect a .0006679 increase in co2 emission levels(measured in metric tons), or 1.47 lb increase.
 
-Our model has an r value of .578, which shows a moderate, positive linear relationship between yearly CO2 emissions and mean household income. Our R^2 value(.3341) shows that household income only accounts for 33.41% of variation in CO2 emissions. This is not very strong, and we would want to look to manipulate our current variables or add more explanatory variables to make our model stronger.
+Our model has an r value of .578, which shows a moderate, positive linear relationship between yearly CO2 emissions and mean household income. Our R\^2 value(.3341) shows that household income only accounts for 33.41% of variation in CO2 emissions. This is not very strong, and we would want to look to manipulate our current variables or add more explanatory variables to make our model stronger.
 
 ## Model Fit
+
+```{r}
+response_variance <- var(mhi_CO2$co2, na.rm = TRUE)
+fitted_vals_variance <- var(model$fitted.values)
+residuals_variance <- var(model$residuals)
+
+Datasets <- c("Response Variable", "Model Fitted Values", "Model Residuals")
+Variance <- c(response_variance, fitted_vals_variance, residuals_variance)
+variance_df <- data.frame(Datasets, Variance)
+
+kable(variance_df,
+      format = "html",
+      caption = "<center><strong>Variance of Reponse Variable and Model</strong></center>",
+      align = "c") |>
+  row_spec(0, underline = TRUE, color = "black", background = "lightblue") |>
+  column_spec(1, color = "black")
+
+```
+
+The proportion of variability in the response values account for by the regression model is calculated using R-squared with a formula of (R2 = 1 - (residual variance / variance in response value)).
+
+R2 = 1 - (32.72974 / 48.69698) = 0.327 or 32.7%.
+
+Since our R2 is only around 33% this suggest that the quality of our model is pretty weak and would most likely be improved by increasing the number of explanatory variables.
+
