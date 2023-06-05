@@ -10,7 +10,7 @@ format:
 editor: source
 execute: 
   error: true
-  echo: true
+  echo: false
   message: false
   warning: false
 ---
