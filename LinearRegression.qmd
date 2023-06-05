@@ -101,4 +101,12 @@ model <- lm(co2 ~ mean_income, data = mhi_CO2)
 summary(model)
 ```
 
+Linear regression involves modeling the relationship between variables in a dataset in a scalar way. A linear model in the form yi = β0 +  β1xi + ε is used to describe the relationship between each explanatory variable to the response accounting for random error. In this study, mean income is the explanatory variable and predicted co2 level is the response, so the model attempts to explain how changes in mean income increase or decrease predicted(co2) levels. 
+
+$Predicted(co2) = 1.163 + .0006679(mean income)$
+
+For every one unit increase in mean income(measured in standardized international dollar units), we expect a .0006679 increase in co2 emission levels(measured in metric tons), or 1.47 lb increase.
+
+Our model has an r value of .578, which shows a moderate, positive linear relationship between yearly CO2 emissions and mean household income. Our R^2 value(.3341) shows that household income only accounts for 33.41% of variation in CO2 emissions. This is not very strong, and we would want to look to manipulate our current variables or add more explanatory variables to make our model stronger.
+
 ## Model Fit
