@@ -49,3 +49,4 @@ po/*~
 rsconnect/
 
 .rproj
+.DS_Store
