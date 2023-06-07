@@ -45,7 +45,9 @@ mhi <- pivot_longer(
 CO2 <- pivot_longer(CO2, cols = 2:70, names_to = "year", values_to = "co2")
 
 mhi_CO2 <- mhi %>% 
-  full_join(CO2, by = join_by(country, year))
+  full_join(CO2, by = join_by(country, year)) %>% 
+  mutate_all(~replace(., is.na(.), 0))
+
 ```
 
 ## Data Visualization
