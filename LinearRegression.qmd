@@ -140,3 +140,30 @@ R2 = 1 - (32.72974 / 48.69698) = 0.327 or 32.7%.
 
 Since our R2 is only around 33% this suggest that the quality of our model is pretty weak and would most likely be improved by increasing the number of explanatory variables.
 
+```{r}
+predictions <- predict(model, newdata = mhi_CO2)
+
+predictions <- predict(model, newdata = mhi_CO2)
+
+# Extract the residual standard error
+sigma <- sigma(model)
+
+
+# Generate random errors
+set.seed(123) # for reproducibility
+errors <- rnorm(nrow(mhi_CO2), mean = 0, sd = sigma)
+
+# Add random errors to predictions
+predictions_with_errors <- predictions + errors
+
+# Create a prediction dataset
+prediction_data <- data.frame(
+  country = mhi_CO2$country,
+  year = mhi_CO2$year,
+  mean_income = mhi_CO2$mean_income,
+  co2 = predictions_with_errors
+)
+
+```
+
+
