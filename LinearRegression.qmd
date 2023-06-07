@@ -52,6 +52,10 @@ mhi_CO2 <- mhi %>%
 
 ## Data Visualization
 
+:::{callout-tip}
+Double clicking a country will select that country and deselect all of the other countries. Single clicking any other country will re-add that country to the plot. Double clicking any selected country will re-add all the countries to the plot.
+:::
+
 ```{r}
 co2_income_plot <- mhi_CO2 %>% 
   ggplot(mapping = aes(x = mean_income, y = sqrt(co2), color = country)) +
