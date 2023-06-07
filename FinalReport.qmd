@@ -40,4 +40,9 @@ mhi_CO2 <- mhi %>%
   mutate_all(~replace(., is.na(.), 0))
 ```
 
-## 
+## Simulation
+
+```{r}
+
+```
+
