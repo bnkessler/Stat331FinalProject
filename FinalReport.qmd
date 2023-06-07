@@ -1,0 +1,18 @@
+---
+title: "Final Report"
+author: "Ben, Andrew, Pranati, Filip"
+format: 
+  html:
+    self-contained: true
+    code-tools: true
+    toc: true
+    number-sections: true
+editor: source
+execute: 
+  error: true
+  echo: false
+  message: false
+  warning: false
+---
+
+## Data
