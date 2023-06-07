@@ -152,21 +152,35 @@ predictions <- predict(model, newdata = mhi_CO2)
 # Extract the residual standard error
 sigma <- sigma(model)
 
+n_sims <- 1000
+
+prediction_datasets <- vector("list", n_sims)
+
 
 # Generate random errors
 set.seed(123) # for reproducibility
-errors <- rnorm(nrow(mhi_CO2), mean = 0, sd = sigma)
 
-# Add random errors to predictions
-predictions_with_errors <- predictions + errors
+for(i in seq_len(n_sims)){
+  
+  predictions <- predict(model, newdata = mhi_CO2)
+  
+  errors <- rnorm(nrow(mhi_CO2), mean = 0, sd = sigma)
+  
+  predictions_with_errors <- predictions + errors
 
-# Create a prediction dataset
-prediction_data <- data.frame(
+  prediction_data <- data.frame(
   country = mhi_CO2$country,
   year = mhi_CO2$year,
   mean_income = mhi_CO2$mean_income,
   co2 = predictions_with_errors
-)
+  )
+  
+  prediction_datasets[[i]] <- prediction_data
+
+  
+}
+
+
 
 ```
 
