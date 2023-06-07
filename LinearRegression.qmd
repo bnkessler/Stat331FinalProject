@@ -54,7 +54,7 @@ mhi_CO2 <- mhi %>%
 
 ```{r}
 co2_income_plot <- mhi_CO2 %>% 
-  ggplot(mapping = aes(x = mean_income, y = co2, color = country)) +
+  ggplot(mapping = aes(x = mean_income, y = sqrt(co2), color = country)) +
   geom_line(show.legend = FALSE, linejoin = "round") +
   labs(
     x = "Mean Household Income [International $]",
@@ -73,7 +73,7 @@ interactive_co2_income_plot
 
 time_plot <- mhi_CO2 %>% 
   mutate(
-    co2_per_income = co2/mean_income
+    co2_per_income = sqrt(co2)/mean_income
   ) %>% 
   ggplot(mapping = aes(x = year, y = co2_per_income, color = country, fill = country)) +
   geom_col(position = "dodge", show.legend = FALSE) +
@@ -102,7 +102,7 @@ The two plots shown are interactive plots of Carbon Dioxide Produced per Person 
 ## Linear Regression
 
 ```{r}
-model <- lm(co2 ~ mean_income, data = mhi_CO2)
+model <- lm(sqrt(co2) ~ mean_income, data = mhi_CO2)
 summary(model)
 ```
 
