@@ -57,6 +57,7 @@ Double clicking a country will select that country and deselect all of the other
 :::
 
 ```{r}
+#| layout-nrow: 2
 co2_income_plot <- mhi_CO2 %>% 
   ggplot(mapping = aes(x = mean_income, y = sqrt(co2), color = country)) +
   geom_line(show.legend = FALSE, linejoin = "round") +
