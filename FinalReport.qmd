@@ -145,6 +145,7 @@ Since our R2 is only around 33% this suggest that the quality of our model is pr
 ## Simulation
 
 ```{r}
+#| layout-ncol: 2
 predictions <- predict(model, newdata = mhi_CO2)
 
 predictions <- predict(model, newdata = mhi_CO2)
@@ -167,6 +168,23 @@ prediction_data <- data.frame(
   mean_income = mhi_CO2$mean_income,
   co2 = predictions_with_errors
 )
+
+# Plot comparing the simulated data to the observed data
+ggplot(data = mhi_CO2,
+       mapping = aes(x = mean_income, y = sqrt(co2), color = country)) +
+  geom_line(show.legend = FALSE, linejoin = "round") +
+  labs(
+    x = "Mean Household Income [International $]",
+    y = "",
+    title = "Carbon Dioxide Produced vs Mean Household Income")
+
+ggplot(data = prediction_data,
+       mapping = aes(x = mean_income, y = sqrt(co2), color = country)) +
+  geom_line(show.legend = FALSE, linejoin = "round") +
+  labs(
+    x = "Predicted Mean Household Income [International $]",
+    y = "",
+    title = "Carbon Dioxide Produced vs Predicted Mean Household Income")
 
 ```
 
