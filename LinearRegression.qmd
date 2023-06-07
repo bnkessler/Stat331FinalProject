@@ -73,7 +73,7 @@ interactive_co2_income_plot
 
 time_plot <- mhi_CO2 %>% 
   mutate(
-    co2_per_income = sqrt(co2)/mean_income
+    co2_per_income = sqrt(co2)/mean(mean_income)
   ) %>% 
   ggplot(mapping = aes(x = year, y = co2_per_income, color = country, fill = country)) +
   geom_col(position = "dodge", show.legend = FALSE) +
