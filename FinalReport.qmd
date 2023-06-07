@@ -145,7 +145,7 @@ Since our R2 is only around 33% this suggest that the quality of our model is pr
 ## Simulation
 
 ```{r}
-#| layout-ncol: 2
+#| layout-nrow: 2
 predictions <- predict(model, newdata = mhi_CO2)
 
 predictions <- predict(model, newdata = mhi_CO2)
@@ -170,21 +170,39 @@ prediction_data <- data.frame(
 )
 
 # Plot comparing the simulated data to the observed data
-ggplot(data = mhi_CO2,
+observed_plot <- ggplot(data = mhi_CO2,
        mapping = aes(x = mean_income, y = sqrt(co2), color = country)) +
   geom_line(show.legend = FALSE, linejoin = "round") +
   labs(
     x = "Mean Household Income [International $]",
     y = "",
-    title = "Carbon Dioxide Produced vs Mean Household Income")
+    title = "Square Root of Carbon Dioxide Produced vs Mean Household Income")
 
-ggplot(data = prediction_data,
+interactive_observed_plot <- ggplotly(observed_plot) %>% 
+  layout(title = list(text = paste0(
+    "Square Root of Carbon Dioxide Produced vs Mean Household Income",
+    "<br>",
+    "<sup>",
+    "Carbon Dioxide Produced per Person [Metric Tonnes]",
+    "</sup>")))
+interactive_observed_plot
+
+simulated_plot <- ggplot(data = prediction_data,
        mapping = aes(x = mean_income, y = sqrt(co2), color = country)) +
   geom_line(show.legend = FALSE, linejoin = "round") +
   labs(
     x = "Predicted Mean Household Income [International $]",
     y = "",
     title = "Carbon Dioxide Produced vs Predicted Mean Household Income")
+
+interactive_simulated_plot <- ggplotly(simulated_plot) %>% 
+  layout(title = list(text = paste0(
+    "Square Root of Carbon Dioxide Produced vs Mean Household Income",
+    "<br>",
+    "<sup>",
+    "Carbon Dioxide Produced per Person [Metric Tonnes]",
+    "</sup>")))
+interactive_simulated_plot
 
 ```
 
