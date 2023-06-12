@@ -65,15 +65,15 @@ co2_income_plot <- mhi_CO2 %>%
   labs(
     x = "Mean Household Income [International $]",
     y = "",
-    title = "Carbon Dioxide Produced vs Mean Household Income"
+    title = "Square Root of Carbon Dioxide Produced vs Mean Household Income"
   )
 
 interactive_co2_income_plot <- ggplotly(co2_income_plot) %>% 
   layout(title = list(text = paste0(
-    "Carbon Dioxide Produced vs Mean Household Income",
+    "Square Root of Carbon Dioxide Produced vs Mean Household Income",
     "<br>",
     "<sup>",
-    "Carbon Dioxide Produced per Person [Metric Tonnes]",
+    "Square Root of Carbon Dioxide Produced per Person [Metric Tonnes]",
     "</sup>")))
 interactive_co2_income_plot
 
@@ -89,15 +89,15 @@ time_plot <- mhi_CO2 %>%
   labs(
     x = "Year",
     y = "",
-    title = "Metric Tons of Carbon Dioxide Produced per Person by Mean Household Income per Year"
+    title = "Square Root of Metric Tons of Carbon Dioxide Produced per Person by Mean Household Income per Year"
   )
 
 interactive_time_plot <- ggplotly(time_plot) %>% 
   layout(title = list(text = paste0(
-    "Carbon Dioxide Produced per Person by Mean Household Income per Year",
+    "Square Root of Carbon Dioxide Produced by Mean Household Income per Year",
     "<br>",
     "<sup>",
-    "Carbon Dioxide Produced per Person by Mean Household Income [Metric Tonnes / International $]",
+    "Square Root of Carbon Dioxide Produced per Person by Mean Household Income [Metric Tonnes / International $]",
     "</sup>")))
   
 interactive_time_plot
@@ -189,10 +189,10 @@ observed_plot <- ggplot(data = mhi_CO2,
 
 interactive_observed_plot <- ggplotly(observed_plot) %>% 
   layout(title = list(text = paste0(
-    "Square Root of Carbon Dioxide Produced vs Mean Household Income",
+    "Square Root of Carbon Dioxide Produced vs Mean Household Income [Actual]",
     "<br>",
     "<sup>",
-    "Carbon Dioxide Produced per Person [Metric Tonnes]",
+    "Square Root of Carbon Dioxide Produced per Person [Metric Tonnes]",
     "</sup>")))
 interactive_observed_plot
 
@@ -206,14 +206,14 @@ simulated_plot <- ggplot(data = prediction_data,
 
 interactive_simulated_plot <- ggplotly(simulated_plot) %>% 
   layout(title = list(text = paste0(
-    "Square Root of Carbon Dioxide Produced vs Mean Household Income",
+    "Square Root of Carbon Dioxide Produced vs Mean Household Income [Simulated]",
     "<br>",
     "<sup>",
-    "Carbon Dioxide Produced per Person [Metric Tonnes]",
+    "Square Root of Carbon Dioxide Produced per Person [Metric Tonnes]",
     "</sup>")))
 interactive_simulated_plot
 
 ```
 
-
+The actual and simulated data are very different for the square root of CO2 produced vs mean household income. We believe this is a result of the large variability in our data set. The simulated data is similar to the actual data from smaller countries, but for larger countries it becomes disjointed. 
 
