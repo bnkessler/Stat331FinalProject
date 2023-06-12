@@ -162,6 +162,10 @@ predictions <- predict(model, newdata = mhi_CO2)
 # Extract the residual standard error
 sigma <- sigma(model)
 
+n_sims <- 1000
+
+prediction_datasets <- vector("list", n_sims)
+
 
 # Generate random errors
 set.seed(123) # for reproducibility
@@ -213,7 +217,42 @@ interactive_simulated_plot <- ggplotly(simulated_plot) %>%
     "</sup>")))
 interactive_simulated_plot
 
+for(i in seq_len(n_sims)){
+  
+  predictions <- predict(model, newdata = mhi_CO2)
+  
+  errors <- rnorm(nrow(mhi_CO2), mean = 0, sd = sigma)
+  
+  predictions_with_errors <- predictions + errors
+
+  prediction_data <- data.frame(
+  country = mhi_CO2$country,
+  year = mhi_CO2$year,
+  mean_income = predictions_with_errors,
+  co2 = mhi_CO2$mean_income
+  )
+  
+  prediction_datasets[[i]] <- prediction_data
+}
+
+rSquaredList = list()
+
+for(i in seq_len(n_sims)) {
+  temp2 <- lm(mhi_CO2$co2 ~ prediction_datasets[[i]]$mean_income)
+  rSquaredList <- append(rSquaredList, summary(temp2)$r.squared)
+}
 ```
 
 The actual and simulated data are very different for the square root of CO2 produced vs mean household income. We believe this is a result of the large variability in our data set. The simulated data is similar to the actual data from smaller countries, but for larger countries it becomes disjointed. 
+
+```{r}
+ggplot() + 
+  geom_histogram(aes(unlist(rSquaredList)), fill = "blue", color = "lightgrey") +
+  labs(title = "Observed vs Predicted R-Squared Values",
+     subtitle = "Count",
+     x = "R-Squared",
+     y = "") +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+```
 
