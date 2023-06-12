@@ -177,12 +177,22 @@ for(i in seq_len(n_sims)){
   )
   
   prediction_datasets[[i]] <- prediction_data
+}
 
-  
+rSquareds = c()
+
+length(prediction_datasets)
+length(mhi_CO2$co2)
+
+for(i in seq_len(n_sims)) {
+  temp <- lm(mhi_CO2$co2 ~ prediction_datasets[[i]]$mean_income)
+  append(rSquareds, temp$r.squared)
 }
 
 
 
 ```
+
+
 
 
