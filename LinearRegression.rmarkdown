@@ -1,0 +1,208 @@
+---
+title: "LinearRegression"
+author: "Ben, Andrew, Pranati, Filip"
+format: 
+  html:
+    self-contained: true
+    code-tools: true
+    toc: true
+    number-sections: true
+editor: source
+execute: 
+  error: true
+  echo: false
+  message: false
+  warning: false
+---
+
+
+## Setup
+
+
+```{r setup}
+library(tidyverse)
+library(plotly)
+library(kableExtra)
+```
+
+
+## Data
+
+
+```{r}
+CO2 <- read_csv("co2_emissions_tonnes_per_person.csv", col_select = c(1, 152:220))
+mhi <- read_csv("mhhinc.csv", col_select = c(1, 152:220))
+
+
+mhi <- mhi %>%
+  mutate_at(vars(-1), function(x) {
+    x <- ifelse(str_detect(x, "k"), 
+                as.numeric(str_replace_all(x, "k", "")) * 1000, 
+                as.numeric(x))
+    return(x)
+})
+
+mhi <- pivot_longer(
+  mhi, cols = 2:70, names_to = "year", values_to = "mean_income",
+  values_transform = list(mean_income = as.double)
+    )
+CO2 <- pivot_longer(CO2, cols = 2:70, names_to = "year", values_to = "co2")
+
+mhi_CO2 <- mhi %>% 
+  full_join(CO2, by = join_by(country, year)) %>% 
+  mutate_all(~replace(., is.na(.), 0))
+
+```
+
+
+## Data Visualization
+
+:::{callout-tip}
+Double clicking a country will select that country and deselect all of the other countries. Single clicking any other country will re-add that country to the plot. Double clicking any selected country will re-add all the countries to the plot.
+:::
+
+
+```{r}
+#| layout-nrow: 2
+co2_income_plot <- mhi_CO2 %>% 
+  ggplot(mapping = aes(x = mean_income, y = sqrt(co2), color = country)) +
+  geom_line(show.legend = FALSE, linejoin = "round") +
+  labs(
+    x = "Mean Household Income [International $]",
+    y = "",
+    title = "Carbon Dioxide Produced vs Mean Household Income"
+  )
+
+interactive_co2_income_plot <- ggplotly(co2_income_plot) %>% 
+  layout(title = list(text = paste0(
+    "Carbon Dioxide Produced vs Mean Household Income",
+    "<br>",
+    "<sup>",
+    "Carbon Dioxide Produced per Person [Metric Tonnes]",
+    "</sup>")))
+interactive_co2_income_plot
+
+time_plot <- mhi_CO2 %>% 
+  mutate(
+    co2_per_income = sqrt(co2)/mean(mean_income)
+  ) %>% 
+  ggplot(mapping = aes(x = year, y = co2_per_income, color = country, fill = country)) +
+  geom_col(position = "dodge", show.legend = FALSE) +
+  scale_x_discrete(
+    breaks = c("1950", "1960", "1970", "1980", "1990", "2000", "2010", "2018")
+    ) +
+  labs(
+    x = "Year",
+    y = "",
+    title = "Metric Tons of Carbon Dioxide Produced per Person by Mean Household Income per Year"
+  )
+
+interactive_time_plot <- ggplotly(time_plot) %>% 
+  layout(title = list(text = paste0(
+    "Carbon Dioxide Produced per Person by Mean Household Income per Year",
+    "<br>",
+    "<sup>",
+    "Carbon Dioxide Produced per Person by Mean Household Income [Metric Tonnes / International $]",
+    "</sup>")))
+  
+interactive_time_plot
+```
+
+
+The two plots shown are interactive plots of Carbon Dioxide Produced per Person vs. Mean Household Income and Carbon Dioxide Produced per Person by Mean Household Income per Year, respectively. The first plot shows Mean Household Income on the x-axis and metric tonnes of Carbon Dioxide produced per person on the y-axis. This plot shows how increasing income affects the amount of CO2 produced per person. The second plot shows the change in graph one over time, from 1950 to 2018. This plot shows how the ratio of CO2 produced over mean household income has changed over the last 68 years.
+
+## Linear Regression
+
+
+```{r}
+model <- lm(sqrt(co2) ~ mean_income, data = mhi_CO2)
+summary(model)
+```
+
+
+Linear regression involves modeling the relationship between variables in a dataset in a scalar way. A linear model in the form yi = β0 + β1xi + ε is used to describe the relationship between each explanatory variable to the response accounting for random error. In this study, mean income is the explanatory variable and predicted co2 level is the response, so the model attempts to explain how changes in mean income increase or decrease predicted(co2) levels.
+
+$Predicted(co2) = 1.163 + .0006679(mean income)$
+
+For every one unit increase in mean income(measured in standardized international dollar units), we expect a .0006679 increase in co2 emission levels(measured in metric tons), or 1.47 lb increase.
+
+Our model has an r value of .578, which shows a moderate, positive linear relationship between yearly CO2 emissions and mean household income. Our R\^2 value(.3341) shows that household income only accounts for 33.41% of variation in CO2 emissions. This is not very strong, and we would want to look to manipulate our current variables or add more explanatory variables to make our model stronger.
+
+## Model Fit
+
+
+```{r}
+response_variance <- var(mhi_CO2$co2, na.rm = TRUE)
+fitted_vals_variance <- var(model$fitted.values)
+residuals_variance <- var(model$residuals)
+
+Datasets <- c("Response Variable", "Model Fitted Values", "Model Residuals")
+Variance <- c(response_variance, fitted_vals_variance, residuals_variance)
+variance_df <- data.frame(Datasets, Variance)
+
+kable(variance_df,
+      format = "html",
+      caption = "<center><strong>Variance of Reponse Variable and Model</strong></center>",
+      align = "c") |>
+  row_spec(0, underline = TRUE, color = "black", background = "lightblue") |>
+  column_spec(1, color = "black")
+
+```
+
+
+The proportion of variability in the response values account for by the regression model is calculated using R-squared with a formula of (R2 = 1 - (residual variance / variance in response value)).
+
+R2 = 1 - (32.72974 / 48.69698) = 0.327 or 32.7%.
+
+Since our R2 is only around 33% this suggest that the quality of our model is pretty weak and would most likely be improved by increasing the number of explanatory variables.
+
+
+```{r}
+predictions <- predict(model, newdata = mhi_CO2)
+
+predictions <- predict(model, newdata = mhi_CO2)
+
+# Extract the residual standard error
+sigma <- sigma(model)
+
+n_sims <- 1000
+
+prediction_datasets <- vector("list", n_sims)
+
+
+# Generate random errors
+set.seed(123) # for reproducibility
+
+for(i in seq_len(n_sims)){
+  
+  predictions <- predict(model, newdata = mhi_CO2)
+  
+  errors <- rnorm(nrow(mhi_CO2), mean = 0, sd = sigma)
+  
+  predictions_with_errors <- predictions + errors
+
+  prediction_data <- data.frame(
+  country = mhi_CO2$country,
+  year = mhi_CO2$year,
+  mean_income = mhi_CO2$mean_income,
+  co2 = predictions_with_errors
+  )
+  
+  prediction_datasets[[i]] <- prediction_data
+}
+
+temp1 <- lm(mhi_CO2$mean_income ~ prediction_datasets[[1]]$co2)
+#summary(temp1)
+summary(temp1)$r.squared
+
+rList = list()
+
+for(i in seq_len(n_sims)) {
+  temp2 <- lm(mhi_CO2$mean_income ~ prediction_datasets[[i]]$co2)
+  rList <- append(rList, summary(temp2)$r.squared)
+}
+
+
+
+```
+

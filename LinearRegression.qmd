@@ -179,14 +179,15 @@ for(i in seq_len(n_sims)){
   prediction_datasets[[i]] <- prediction_data
 }
 
-rSquareds = c()
+temp1 <- lm(mhi_CO2$mean_income ~ prediction_datasets[[1]]$co2)
+#summary(temp1)
+summary(temp1)$r.squared
 
-length(prediction_datasets)
-length(mhi_CO2$co2)
+rList = list()
 
 for(i in seq_len(n_sims)) {
-  temp <- lm(mhi_CO2$co2 ~ prediction_datasets[[i]]$mean_income)
-  append(rSquareds, temp$r.squared)
+  temp2 <- lm(mhi_CO2$mean_income ~ prediction_datasets[[i]]$co2)
+  rList <- append(rList, summary(temp2)$r.squared)
 }
 
 
