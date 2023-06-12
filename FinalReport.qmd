@@ -14,6 +14,13 @@ execute:
   message: false
   warning: false
 ---
+```{r setup}
+library(tidyverse)
+library(plotly)
+library(kableExtra)
+```
+
+
 ### Data Description
 The data set hopes to discover a relationship between the mean household income and amount of tons in CO2 emission on an average country. The study is observational with the experimental units being each country.The mean household income data provides the average household income per year for each individual country, starting at 1950 and ending in 2018. The units of the incomes provided are in standardized international dollar units. The CO2 emissions per person dataset records the average carbon dioxide produced per person in the country per year measured in metric tonnes, starting in 1950 and ending in 2018.
 
@@ -48,7 +55,7 @@ mhi_CO2 <- mhi %>%
 ## Data Visualization
 
 :::{callout-tip}
-Double clicking a country will select that country and deselect all of the other countries. Single clicking any other country will re-add that country to the plot. Double clicking any selected country will re-add all the countries to the plot.
+Double clicking a country will select that country and deselect all of the other countries. Single clicking any other country will add that country to the plot. Double clicking any selected country will add all the countries to the plot.
 :::
 
 ```{r}
@@ -96,7 +103,7 @@ interactive_time_plot <- ggplotly(time_plot) %>%
 interactive_time_plot
 ```
 
-The two plots shown are interactive plots of Carbon Dioxide Produced per Person vs. Mean Household Income and Carbon Dioxide Produced per Person by Mean Household Income per Year, respectively. The first plot shows Mean Household Income on the x-axis and metric tonnes of Carbon Dioxide produced per person on the y-axis. This plot shows how increasing income affects the amount of CO2 produced per person. The second plot shows the change in graph one over time, from 1950 to 2018. This plot shows how the ratio of CO2 produced over mean household income has changed over the last 68 years.
+The two plots shown are interactive plots of the square root of Carbon Dioxide Produced per Person vs. Mean Household Income and the square root of Carbon Dioxide Produced per Person by Mean Household Income per Year, respectively. The first plot shows Mean Household Income on the x-axis and the square root of metric tonnes of Carbon Dioxide produced per person on the y-axis. This plot shows how increasing income affects the amount of CO2 produced per person. The second plot shows the change in graph one over time, while using the mean income over time, from 1950 to 2018. This plot shows how the ratio of the square root of CO2 produced over mean household income has changed over the last 68 years.
 
 ## Linear Regression
 
