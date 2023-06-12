@@ -1,5 +1,5 @@
 ---
-title: "Final Report"
+title: "CO2 and Mean Family Income Final Report"
 author: "Ben, Andrew, Pranati, Filip"
 format: 
   html:
@@ -55,7 +55,7 @@ mhi_CO2 <- mhi %>%
 ## Data Visualization
 
 :::{callout-tip}
-Double clicking a country will select that country and deselect all of the other countries. Single clicking any other country will add that country to the plot. Double clicking any selected country will add all the countries to the plot.
+Double clicking a country will select that country and deselect all of the other countries. Single clicking any other country will add that country to the plot. Double clicking any selected country will add all the countries to the plot. It is recommended that only a few countries are displayed at a time for ease of use. All of the countries are provided to give a wide spectrum of options and to compare between different levels of industrialization and modernization.
 :::
 
 ```{r}
@@ -65,15 +65,15 @@ co2_income_plot <- mhi_CO2 %>%
   labs(
     x = "Mean Household Income [International $]",
     y = "",
-    title = "Carbon Dioxide Produced vs Mean Household Income"
+    title = "Square Root of Carbon Dioxide Produced vs Mean Household Income"
   )
 
 interactive_co2_income_plot <- ggplotly(co2_income_plot) %>% 
   layout(title = list(text = paste0(
-    "Carbon Dioxide Produced vs Mean Household Income",
+    "Square Root of Carbon Dioxide Produced vs Mean Household Income",
     "<br>",
     "<sup>",
-    "Carbon Dioxide Produced per Person [Metric Tonnes]",
+    "Square Root of Carbon Dioxide Produced per Person [Metric Tonnes]",
     "</sup>")))
 interactive_co2_income_plot
 
@@ -89,21 +89,25 @@ time_plot <- mhi_CO2 %>%
   labs(
     x = "Year",
     y = "",
-    title = "Metric Tons of Carbon Dioxide Produced per Person by Mean Household Income per Year"
+    title = "Square Root of Metric Tons of Carbon Dioxide Produced per Person by Mean Household Income per Year"
   )
 
 interactive_time_plot <- ggplotly(time_plot) %>% 
   layout(title = list(text = paste0(
-    "Carbon Dioxide Produced per Person by Mean Household Income per Year",
+    "Square Root of Carbon Dioxide Produced by Mean Household Income per Year",
     "<br>",
     "<sup>",
-    "Carbon Dioxide Produced per Person by Mean Household Income [Metric Tonnes / International $]",
+    "Square Root of Carbon Dioxide Produced per Person by Mean Household Income [Metric Tonnes / International $]",
     "</sup>")))
   
 interactive_time_plot
 ```
 
 The two plots shown are interactive plots of the square root of Carbon Dioxide Produced per Person vs. Mean Household Income and the square root of Carbon Dioxide Produced per Person by Mean Household Income per Year, respectively. The first plot shows Mean Household Income on the x-axis and the square root of metric tonnes of Carbon Dioxide produced per person on the y-axis. This plot shows how increasing income affects the amount of CO2 produced per person. The second plot shows the change in graph one over time, while using the mean income over time, from 1950 to 2018. This plot shows how the ratio of the square root of CO2 produced over mean household income has changed over the last 68 years.
+
+Looking at the first plot shows the effect that income has on CO2 produced. It shows for most countries that as mean household income increases, so does CO2 produced. The data also shows that for industrialized countries there is a point at which income and CO2 become decoupled and CO2 per person starts to fall. We believe this is due to green technologies being more cost prohibitive and therefore there effects are mainly seen at higher income levels. As green technologies become cheaper to produce, we expect that this trend will continue and will spread to lower income people as well. 
+
+The second plot shows how income and CO2 produced have changed over time. This graph follows a similar shape for most countries, with an early peak that is followed by an decay which is very similar in shape to $1/x$. This shows that as a country industrializes, it begins to reduce the amount of CO2 produced per person. A country that shows this effect especially well is China, whose CO2 per mean household income peaks in 1961 and has been falling since. Countries that have already industrialized stay extremely constant.
 
 ## Linear Regression
 
@@ -147,8 +151,6 @@ R2 = 1 - (32.72974 / 48.69698) = 0.327 or 32.7%.
 Since our R2 is only around 33% this suggest that the quality of our model is pretty weak and would most likely be improved by increasing the number of explanatory variables.
 
 
-
-
 ## Simulation
 
 ```{r}
@@ -187,10 +189,10 @@ observed_plot <- ggplot(data = mhi_CO2,
 
 interactive_observed_plot <- ggplotly(observed_plot) %>% 
   layout(title = list(text = paste0(
-    "Square Root of Carbon Dioxide Produced vs Mean Household Income",
+    "Square Root of Carbon Dioxide Produced vs Mean Household Income [Actual]",
     "<br>",
     "<sup>",
-    "Carbon Dioxide Produced per Person [Metric Tonnes]",
+    "Square Root of Carbon Dioxide Produced per Person [Metric Tonnes]",
     "</sup>")))
 interactive_observed_plot
 
@@ -204,14 +206,14 @@ simulated_plot <- ggplot(data = prediction_data,
 
 interactive_simulated_plot <- ggplotly(simulated_plot) %>% 
   layout(title = list(text = paste0(
-    "Square Root of Carbon Dioxide Produced vs Mean Household Income",
+    "Square Root of Carbon Dioxide Produced vs Mean Household Income [Simulated]",
     "<br>",
     "<sup>",
-    "Carbon Dioxide Produced per Person [Metric Tonnes]",
+    "Square Root of Carbon Dioxide Produced per Person [Metric Tonnes]",
     "</sup>")))
 interactive_simulated_plot
 
 ```
 
-
+The actual and simulated data are very different for the square root of CO2 produced vs mean household income. We believe this is a result of the large variability in our data set. The simulated data is similar to the actual data from smaller countries, but for larger countries it becomes disjointed. 
 
