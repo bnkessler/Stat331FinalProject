@@ -1,6 +1,6 @@
 ---
 title: "CO2 and Mean Family Income Final Report"
-author: "Ben, Andrew, Pranati, Filip"
+authors: "Ben, Andrew, Pranati, Filip"
 format: 
   html:
     self-contained: true
@@ -116,13 +116,13 @@ model <- lm(sqrt(co2) ~ mean_income, data = mhi_CO2)
 summary(model)
 ```
 
-Linear regression involves modeling the relationship between variables in a dataset in a scalar way. A linear model in the form yi = β0 + β1xi + ε is used to describe the relationship between each explanatory variable to the response accounting for random error. In this study, mean income is the explanatory variable and predicted co2 level is the response, so the model attempts to explain how changes in mean income increase or decrease predicted(co2) levels. 
+Linear regression involves modeling the relationship between variables in a dataset in a scalar way. A linear model in the form yi = β0 + β1xi + ε is used to describe the relationship between each explanatory variable to the response accounting for random error. In this study, mean income is the explanatory variable and predicted CO2 level is the response, so the model attempts to explain how changes in mean income increase or decrease predicted(CO2) levels. 
 
 $Predicted(\sqrt{co2}) = 0.9085 + .0001402(mean income)$
 
 For every one unit increase in mean income(measured in standardized international dollar units), we expect a .0001402 increase in the square root of co2 emission levels(measured in metric tons), or 0.3091 lb increase.
 
-Our model has an r value of .6368, which shows a moderate, positive linear relationship between yearly CO2 emissions and mean household income. Our R\^2 value(.4057) shows that household income only accounts for 40.57% of variation in CO2 emissions. This is slightly strong, and we would want to look to manipulate our current variables or add more explanatory variables to make our model stronger. Since a model without transformations has a relatively low R^2 value of 0.33, a square root transformation has been applied to the response variable, carbon dioxide emissions, to better explain changes in mean income in the model. Through this transformation on co2 levels, the R^2 value increases to 0.406 explaining around 7% more variability in co2 emissions by mean income. 
+Our model has an r value of .6368, which shows a moderate, positive linear relationship between yearly CO2 emissions and mean household income. Our R\^2 value(.4057) shows that household income only accounts for 40.57% of variation in CO2 emissions. This is slightly strong, and we would want to look to manipulate our current variables or add more explanatory variables to make our model stronger. Since a model without transformations has a relatively low R\^2 value of 0.4057, a square root transformation has been applied to the response variable, carbon dioxide emissions, to better explain changes in mean income in the model. Through this transformation on CO2 levels, the R^2 value increases to 0.406 explaining around 7% more variability in CO2 emissions by mean income. 
 
 ## Model Fit
 
@@ -146,12 +146,16 @@ kable(variance_df,
 
 The proportion of variability in the response values account for by the regression model is calculated using R-squared with a formula of (R2 = 1 - (residual variance / variance in response value)).
 
-R2 = 1 - (32.72974 / 48.69698) = 0.327 or 32.7%.
+R2 = 1 - (27.6448 / 46.5166) = 0.4057 or 40.57%.
 
 Since our R2 is only around 33% this suggest that the quality of our model is pretty weak and would most likely be improved by increasing the number of explanatory variables.
 
 
 ## Simulation
+
+:::{callout-tip}
+Double clicking a country will select that country and deselect all of the other countries. Single clicking any other country will add that country to the plot. Double clicking any selected country will add all the countries to the plot. It is recommended that only a few countries are displayed at a time for ease of use. All of the countries are provided to give a wide spectrum of options and to compare between different levels of industrialization and modernization.
+:::
 
 ```{r}
 #| layout-nrow: 2
@@ -238,7 +242,7 @@ for(i in seq_len(n_sims)){
 rSquaredList = list()
 
 for(i in seq_len(n_sims)) {
-  temp2 <- lm(mhi_CO2$co2 ~ prediction_datasets[[i]]$mean_income)
+  temp2 <- lm(sqrt(mhi_CO2$co2) ~ prediction_datasets[[i]]$mean_income)
   rSquaredList <- append(rSquaredList, summary(temp2)$r.squared)
 }
 ```
@@ -256,3 +260,4 @@ ggplot() +
         plot.subtitle = element_text(hjust = 0.5))
 ```
 
+The R\^2 values calculated from the simulated data set show that our model does not generate data similar to what was observed. We observed an R\^2 value of .4057, while our 1000 simulations provided a mean R\^2 value of approximately .135. This means that our simulated data is worse than the actual data and that it only represents about 13% of the variance in the model.
